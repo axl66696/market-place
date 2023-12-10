@@ -19,6 +19,7 @@ namespace MarketPlace
             //------------------Input--------------------
             while (true)
             {
+                //Console.Write("TEST");
                 Console.Write("# ");
                 string input = Console.ReadLine();
                 List<string> command = ParseQuotedStrings(input);
@@ -26,22 +27,23 @@ namespace MarketPlace
                 switch (command[0])
                 {
                     case "REGISTER":
-                        REGISTER_USER(command[1]);
+                        //REGISTER_USER(command[1]);
+                        UserBase.REGISTER_USER(command[1]);
                         break;
                     case "CREATE_LISTING":
-                        CREATE_LISTING(command[1], command[2], command[3], int.Parse(command[4]), command[5]);
+                        ListingBase.CREATE_LISTING(command[1], command[2], command[3], int.Parse(command[4]), command[5]);
                         break;
                     case "DELETE_LISTING":
-                        DELETE_LISTING(command[1], int.Parse(command[2]));
+                        ListingBase.DELETE_LISTING(command[1], int.Parse(command[2]));
                         break;
                     case "GET_LISTING":
-                        GET_LISTING(command[1], int.Parse(command[2]));
+                        ListingBase.GET_LISTING(command[1], int.Parse(command[2]));
                         break;
                     case "GET_CATEGORY":
-                        GET_CATEGORY(command[1], command[2], command[3], command[4]);
+                        ListingBase.GET_CATEGORY(command[1], command[2], command[3], command[4]);
                         break;
                     case "GET_TOP_CATEGORY":
-                        GET_TOP_CATEGORY(command[1]);
+                        ListingBase.GET_TOP_CATEGORY(command[1]);
                         break;
                 }
 
@@ -106,7 +108,7 @@ namespace MarketPlace
 
         static UserBase[] DefaultData = new UserBase[]
             {
-            new UserBase("Alpha")
+                new UserBase("Alpha")
             };
 
         static ListingBase[] DefaultListing = new ListingBase[]
@@ -172,333 +174,333 @@ namespace MarketPlace
             }
         }
 
-        public static UserBase GetUser(string name)
-        {
-            var sql =
-                @"
-                    SELECT *
-                    FROM User
-                    Where Name = @Name
-                ";
+        //public static UserBase GetUser(string name)
+        //{
+        //    var sql =
+        //        @"
+        //            SELECT *
+        //            FROM User
+        //            Where Name = @Name
+        //        ";
 
-            var parameters = new DynamicParameters();
-            parameters.Add("Name", name);
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("Name", name);
             
-            using (var cn = new SQLiteConnection(cnStr)) {
+        //    using (var cn = new SQLiteConnection(cnStr)) {
 
-                var rawUser = cn.QueryFirstOrDefault<UserBase>(sql, parameters);
+        //        var rawUser = cn.QueryFirstOrDefault<UserBase>(sql, parameters);
 
-                if (rawUser != null) {
-                    return rawUser;
-                }
-                else
-                {
-                    return null;
-                }
+        //        if (rawUser != null) {
+        //            return rawUser;
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
 
-        public static bool InsertUser(UserBase user)
-        {
-            var sql =
-                @"
-                    INSERT INTO User
-                    (
-                        [Name]
-                    )
-                    VALUES
-                    (
-                        @Name
-                    );
+        //public static bool InsertUser(UserBase user)
+        //{
+        //    var sql =
+        //        @"
+        //            INSERT INTO User
+        //            (
+        //                [Name]
+        //            )
+        //            VALUES
+        //            (
+        //                @Name
+        //            );
 
-                ";
+        //        ";
 
-            using (var cn = new SQLiteConnection(cnStr)) {
+        //    using (var cn = new SQLiteConnection(cnStr)) {
 
-                var result = cn.Execute(sql, user);
-                return result > 0;
-            }
-        }
+        //        var result = cn.Execute(sql, user);
+        //        return result > 0;
+        //    }
+        //}
 
         
 
         //---------------------------Listing--------------------------
 
-        public static List<ListingBase> GetAllListings()
-        {
-            var sql =
-                @"
-                    SELECT *
-                    FROM Listing
-                ";
+        //public static List<ListingBase> GetAllListings()
+        //{
+        //    var sql =
+        //        @"
+        //            SELECT *
+        //            FROM Listing
+        //        ";
 
-            using (var cn = new SQLiteConnection(cnStr)) {
+        //    using (var cn = new SQLiteConnection(cnStr)) {
 
-                var rawListing = cn.Query<ListingBase>(sql).ToList();
+        //        var rawListing = cn.Query<ListingBase>(sql).ToList();
 
-                if (rawListing != null){
-                    return rawListing;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
+        //        if (rawListing != null){
+        //            return rawListing;
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //}
 
-        public static ListingBase GetListing(int id)
-        {
-            var sql =
-                @"
-                    SELECT *
-                    FROM Listing
-                    WHERE Id = @Id
-                ";
+        //public static ListingBase GetListing(int id)
+        //{
+        //    var sql =
+        //        @"
+        //            SELECT *
+        //            FROM Listing
+        //            WHERE Id = @Id
+        //        ";
 
-            var parameters = new DynamicParameters();
-            parameters.Add("Id", id);
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("Id", id);
 
-            using (var cn = new SQLiteConnection(cnStr)) {
+        //    using (var cn = new SQLiteConnection(cnStr)) {
 
-                ListingBase rawListing = cn.QueryFirstOrDefault<ListingBase>(sql, parameters);
-                return rawListing;
-            }
-        }
+        //        ListingBase rawListing = cn.QueryFirstOrDefault<ListingBase>(sql, parameters);
+        //        return rawListing;
+        //    }
+        //}
 
-        public static ListingBase GetLatestListing()
-        {
-            var sql =
-                @"
-                    SELECT *
-                    FROM Listing
-                    ORDER BY CreationTime DESC
-                    LIMIT 1
-                ";
+        //public static ListingBase GetLatestListing()
+        //{
+        //    var sql =
+        //        @"
+        //            SELECT *
+        //            FROM Listing
+        //            ORDER BY CreationTime DESC
+        //            LIMIT 1
+        //        ";
 
-            using (var cn = new SQLiteConnection(cnStr)) {
+        //    using (var cn = new SQLiteConnection(cnStr)) {
 
-                ListingBase rawListing = cn.QueryFirstOrDefault<ListingBase>(sql);
-                return rawListing;  
-            }
+        //        ListingBase rawListing = cn.QueryFirstOrDefault<ListingBase>(sql);
+        //        return rawListing;  
+        //    }
 
-        }
+        //}
         
-        public static bool InsertListing(ListingBase listing)
-        {
-            var sql =
-                @"
-                    INSERT INTO Listing
-                    (
+        //public static bool InsertListing(ListingBase listing)
+        //{
+        //    var sql =
+        //        @"
+        //            INSERT INTO Listing
+        //            (
                         
-                        [Id],
-                        [UserName],
-                        [Title],
-                        [Description],
-                        [Price],
-                        [CreationTime],
-                        [Category]
-                    )
-                    VALUES
-                    (
-                        @Id,
-                        @UserName,
-                        @Title,
-                        @Description,
-                        @Price,
-                        @CreationTime,
-                        @Category
+        //                [Id],
+        //                [UserName],
+        //                [Title],
+        //                [Description],
+        //                [Price],
+        //                [CreationTime],
+        //                [Category]
+        //            )
+        //            VALUES
+        //            (
+        //                @Id,
+        //                @UserName,
+        //                @Title,
+        //                @Description,
+        //                @Price,
+        //                @CreationTime,
+        //                @Category
 
-                    );
+        //            );
 
-                ";
-            using (var cn = new SQLiteConnection(cnStr)) {
+        //        ";
+        //    using (var cn = new SQLiteConnection(cnStr)) {
 
-                var result = cn.Execute(sql, listing);
-                Console.WriteLine(listing.Id);
-                return result > 0;
-            }
-        }
+        //        var result = cn.Execute(sql, listing);
+        //        Console.WriteLine(listing.Id);
+        //        return result > 0;
+        //    }
+        //}
 
-        public static void DeleteListing(int id)
-        {
-            var sql =
-                @"
-                    DELETE FROM Listing
-                    WHERE Id = @Id
+        //public static void DeleteListing(int id)
+        //{
+        //    var sql =
+        //        @"
+        //            DELETE FROM Listing
+        //            WHERE Id = @Id
 
-                ";
-            var parameters = new DynamicParameters();
-            parameters.Add("Id", id, System.Data.DbType.Int32);
+        //        ";
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("Id", id, System.Data.DbType.Int32);
             
-            using (var cn = new SQLiteConnection(cnStr)) {
+        //    using (var cn = new SQLiteConnection(cnStr)) {
 
-                var result = cn.Execute(sql, parameters);
-            }
-        }
+        //        var result = cn.Execute(sql, parameters);
+        //    }
+        //}
 
 
         //----------------------------category-------------------
 
-        public static List<ListingBase> GetCategory(string userName, string category)
-        {
-            var sql =
-                @"
-                    SELECT *
-                    FROM Listing
-                    WHERE Category = @Category
-                ";
-            var parameters = new DynamicParameters();
-            parameters.Add("Category", category);
+        //public static List<ListingBase> GetCategory(string userName, string category)
+        //{
+        //    var sql =
+        //        @"
+        //            SELECT *
+        //            FROM Listing
+        //            WHERE Category = @Category
+        //        ";
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("Category", category);
 
-            using (var cn = new SQLiteConnection(cnStr)) {
+        //    using (var cn = new SQLiteConnection(cnStr)) {
 
-                var rawListing = cn.Query<ListingBase>(sql, parameters).ToList();
-                return rawListing;
-            }
-        }
+        //        var rawListing = cn.Query<ListingBase>(sql, parameters).ToList();
+        //        return rawListing;
+        //    }
+        //}
 
-        public static void GetTopCategory()
-        {
-            var sql =
-                @"
-                    SELECT Category, COUNT(*) AS ListingCount
-                    FROM Listing
-                    GROUP BY Category
-                    ORDER BY ListingCount DESC
-                    LIMIT 1
-                ";
+        //public static void GetTopCategory()
+        //{
+        //    var sql =
+        //        @"
+        //            SELECT Category, COUNT(*) AS ListingCount
+        //            FROM Listing
+        //            GROUP BY Category
+        //            ORDER BY ListingCount DESC
+        //            LIMIT 1
+        //        ";
 
-            using (var cn = new SQLiteConnection(cnStr)) {
+        //    using (var cn = new SQLiteConnection(cnStr)) {
 
-                var rawCategory = cn.QueryFirstOrDefault<ListingBase>(sql);
-                if (rawCategory != null) {
-                    Console.WriteLine(rawCategory.Category);
-                }
-                else
-                {
-                    Console.WriteLine("No Top Category");
-                }
+        //        var rawCategory = cn.QueryFirstOrDefault<ListingBase>(sql);
+        //        if (rawCategory != null) {
+        //            Console.WriteLine(rawCategory.Category);
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("No Top Category");
+        //        }
                 
-            }
-        }
+        //    }
+        //}
 
 
-        static void REGISTER_USER(string name)
-        {
-            if (GetUser(name) == null) {
+        //static void REGISTER_USER(string name)
+        //{
+        //    if (GetUser(name) == null) {
 
-                UserBase newUser = new UserBase(name);
-                if (InsertUser(newUser)) {
-                    Console.WriteLine("Success");
-                }
-            } 
-            else
-            {
-                Console.WriteLine("Error - user already existing");
-            }
-        }
+        //        UserBase newUser = new UserBase(name);
+        //        if (InsertUser(newUser)) {
+        //            Console.WriteLine("Success");
+        //        }
+        //    } 
+        //    else
+        //    {
+        //        Console.WriteLine("Error - user already existing");
+        //    }
+        //}
 
-        static void CREATE_LISTING(string userName, string title, string description, int price, string category)
-        {
-            if (GetUser(userName) == null) {
-                Console.WriteLine("Error - unknown user");
-                return;
-            }
+        //static void CREATE_LISTING(string userName, string title, string description, int price, string category)
+        //{
+        //    if (GetUser(userName) == null) {
+        //        Console.WriteLine("Error - unknown user");
+        //        return;
+        //    }
 
-            ListingBase latestListing = GetLatestListing();
-            var newId = latestListing.Id + 1;
-            var currentTime = DateTime.Now;
-            var newListing = new ListingBase(newId, userName, title, description, price, currentTime, category);
-            InsertListing(newListing);
+        //    ListingBase latestListing = GetLatestListing();
+        //    var newId = latestListing.Id + 1;
+        //    var currentTime = DateTime.Now;
+        //    var newListing = new ListingBase(newId, userName, title, description, price, currentTime, category);
+        //    InsertListing(newListing);
 
-        }
+        //}
 
-        static void DELETE_LISTING(string userName, int id)
-        {
-            ListingBase listing = GetListing(id);
-            if (listing == null) {
-                Console.WriteLine("Error - listing does not exist");
-                return;
-            }
-            else if (userName != listing.UserName) {
-                Console.WriteLine("Error - listing owner mismatch");
-                return;
-            }
-            else
-            {
-                DeleteListing(id);
-                Console.WriteLine("Success");
-            }
-        }
+        //static void DELETE_LISTING(string userName, int id)
+        //{
+        //    ListingBase listing = GetListing(id);
+        //    if (listing == null) {
+        //        Console.WriteLine("Error - listing does not exist");
+        //        return;
+        //    }
+        //    else if (userName != listing.UserName) {
+        //        Console.WriteLine("Error - listing owner mismatch");
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        DeleteListing(id);
+        //        Console.WriteLine("Success");
+        //    }
+        //}
 
-        static void GET_LISTING(string userName, int id)
-        {
-            UserBase user = GetUser(userName);
-            if (user == null)
-            {
-                Console.WriteLine("Error - unknown user");
-                return;
-            }
+        //static void GET_LISTING(string userName, int id)
+        //{
+        //    UserBase user = GetUser(userName);
+        //    if (user == null)
+        //    {
+        //        Console.WriteLine("Error - unknown user");
+        //        return;
+        //    }
 
-            ListingBase listing = GetListing(id);
-            if (listing == null)
-            {
-                Console.WriteLine("Error - not found");
-                return;
-            }
-            else
-            {
-                Console.WriteLine(listing.Title + '|' + listing.Description + '|'
-                    + listing.Price + '|' + listing.CreationTime + '|'
-                    + listing.Category + '|' + listing.UserName);
-                return;
-            }
+        //    ListingBase listing = GetListing(id);
+        //    if (listing == null)
+        //    {
+        //        Console.WriteLine("Error - not found");
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine(listing.Title + '|' + listing.Description + '|'
+        //            + listing.Price + '|' + listing.CreationTime + '|'
+        //            + listing.Category + '|' + listing.UserName);
+        //        return;
+        //    }
             
-        }
+        //}
 
-        static void GET_CATEGORY(string userName, string category, string sortedBy, string order)
-        {
-            UserBase user = GetUser(userName);
-            if (user == null)
-            {
-                Console.WriteLine("Error - unknown user");
-                return;
-            }
-            List<ListingBase> rawListings = GetCategory(userName, category);
+        //static void GET_CATEGORY(string userName, string category, string sortedBy, string order)
+        //{
+        //    UserBase user = GetUser(userName);
+        //    if (user == null)
+        //    {
+        //        Console.WriteLine("Error - unknown user");
+        //        return;
+        //    }
+        //    List<ListingBase> rawListings = GetCategory(userName, category);
 
-            if (!rawListings.Any())
-            {
-                Console.WriteLine("Error - category not found");
-            }
-            else
-            {
-                string sortedParam = (sortedBy == "sort_time") ? "CreationTime" : "Price";
-                var tmpResult = order == "ASC"
-                    ? rawListings.OrderBy(x => x.GetType().GetProperty(sortedParam).GetValue(x, null))
-                    : rawListings.OrderByDescending(x => x.GetType().GetProperty(sortedParam).GetValue(x, null));
+        //    if (!rawListings.Any())
+        //    {
+        //        Console.WriteLine("Error - category not found");
+        //    }
+        //    else
+        //    {
+        //        string sortedParam = (sortedBy == "sort_time") ? "CreationTime" : "Price";
+        //        var tmpResult = order == "ASC"
+        //            ? rawListings.OrderBy(x => x.GetType().GetProperty(sortedParam).GetValue(x, null))
+        //            : rawListings.OrderByDescending(x => x.GetType().GetProperty(sortedParam).GetValue(x, null));
                 
-                List<ListingBase> listings = tmpResult.ToList();
+        //        List<ListingBase> listings = tmpResult.ToList();
 
-                foreach (ListingBase listing in listings) 
-                {
-                    Console.WriteLine(listing.Title + '|' + listing.Description + '|' + listing.Price + '|' + listing.CreationTime + '|' + listing.Category + '|' + listing.UserName);
-                }
-            }
-        }
+        //        foreach (ListingBase listing in listings) 
+        //        {
+        //            Console.WriteLine(listing.Title + '|' + listing.Description + '|' + listing.Price + '|' + listing.CreationTime + '|' + listing.Category + '|' + listing.UserName);
+        //        }
+        //    }
+        //}
 
-        static void GET_TOP_CATEGORY(string userName)
-        {
-            UserBase user = GetUser(userName);
-            if (user == null)
-            {
-                Console.WriteLine("Error - unknown user");
-                return;
-            }
+        //static void GET_TOP_CATEGORY(string userName)
+        //{
+        //    UserBase user = GetUser(userName);
+        //    if (user == null)
+        //    {
+        //        Console.WriteLine("Error - unknown user");
+        //        return;
+        //    }
 
-            GetTopCategory();
+        //    GetTopCategory();
 
-        }
+        //}
     }
 }
